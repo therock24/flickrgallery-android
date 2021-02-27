@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">FlickerGallery</string>
+    <string name="no_images_found">No Images found!</string>
+    <string name="image_title">Image Title</string>
 </resources>
