@@ -1,7 +1,6 @@
 package com.mindera.flickergallery
 
 import org.junit.Test
-
 import org.junit.Assert.*
 
 /**

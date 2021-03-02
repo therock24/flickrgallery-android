@@ -2,18 +2,21 @@ package com.mindera.flickergallery.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
-@Entity(tableName = "photos")
+@Entity(tableName = "images")
 data class ImageItem(
     @field:PrimaryKey
-    var id: String,
-    var owner: String,
-    var secret: String,
-    var server: String,
-    var farm: Int,
-    var title: String?,
-    var ispublic: Short,
-    var isfriend: Short,
-    var isfamily: Short,
-    var url_q: String
-)
+    val id: String,
+    val farm: Int,
+    val isfamily: Int,
+    val isfriend: Int,
+    val ispublic: Int,
+    val owner: String,
+    val secret: String,
+    val server: String,
+    val title: String,
+    val url_q: String,
+    val width_q: Int,
+    val height_q: Int,
+) : Serializable
