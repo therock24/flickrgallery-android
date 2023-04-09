@@ -14,15 +14,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // initialize viewmodel
+        val galleryRepository = GalleryRepository(GalleryDatabase.invoke(this))
+        val vmFactory = GalleryViewModelProviderFactory(application,galleryRepository)
+        galleryViewModel = ViewModelProvider(this, vmFactory).get(GalleryViewModel::class.java)
+
         setContentView(R.layout.activity_main)
 
         // set top toolbar
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         supportActionBar?.title = getText(R.string.app_name)
 
-        // initialize viewmodel
-        val galleryRepository = GalleryRepository(GalleryDatabase.invoke(this))
-        val vmFactory = GalleryViewModelProviderFactory(application,galleryRepository)
-        galleryViewModel = ViewModelProvider(this, vmFactory).get(GalleryViewModel::class.java)
+
     }
 }

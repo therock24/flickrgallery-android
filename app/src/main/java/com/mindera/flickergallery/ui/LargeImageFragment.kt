@@ -14,7 +14,6 @@ import com.mindera.flickergallery.R
 import com.mindera.flickergallery.databinding.FragmentGalleryBinding
 import com.mindera.flickergallery.databinding.FragmentLargeImageBinding
 import com.mindera.flickergallery.utils.URLUtils
-import kotlinx.android.synthetic.main.fragment_large_image.view.*
 
 /**
  * Fragment that shows a single image in the Large Size.

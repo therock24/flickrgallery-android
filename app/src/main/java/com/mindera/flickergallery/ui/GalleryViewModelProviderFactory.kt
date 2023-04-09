@@ -14,7 +14,7 @@ class GalleryViewModelProviderFactory(
     private val galleryRepository: GalleryRepository
 ): ViewModelProvider.Factory {
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return GalleryViewModel(app,galleryRepository) as T
     }
 }

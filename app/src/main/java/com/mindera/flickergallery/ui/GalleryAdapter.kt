@@ -12,9 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.mindera.flickergallery.R
+import com.mindera.flickergallery.databinding.ImageItemBinding
 import com.mindera.flickergallery.models.ImageItem
 import com.mindera.flickergallery.utils.URLUtils
-import kotlinx.android.synthetic.main.image_item.view.*
 import java.util.*
 
 /**
@@ -22,7 +22,15 @@ import java.util.*
  */
 class GalleryAdapter: RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
 
-        inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+        inner class ViewHolder(private val binding: ImageItemBinding) : RecyclerView.ViewHolder(binding.root) {
+                fun bind(image: ImageItem) {
+                        binding.tvName.text = image.id
+                        loadImageToImageView(binding, image, binding.ivImage)
+                        binding.root.setOnClickListener {
+                                onItemClickListener?.let { it(image) }
+                        }
+                }
+        }
 
         // callback for checking unique items (to avoid duplicates)
         private val differCallback = object : DiffUtil.ItemCallback<ImageItem>() {
@@ -40,38 +48,26 @@ class GalleryAdapter: RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
         private val differ = AsyncListDiffer(this,differCallback)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-                return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.image_item,parent,false))
+                val binding = ImageItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                return ViewHolder(binding)
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
                 val image = differ.currentList[position]
-                holder.itemView.apply {
-
-                        // set text under image
-                        cvImage.tvName.text = image.id
-
-                        // load image to image view
-                        loadImageToImageView(image,this)
-
-
-                        // set click listener for the image item
-                        setOnClickListener {
-                                onItemClickListener?.let { it(image) }
-                        }
-                }
+                holder.bind(image)
         }
 
         /**
          * Loads the image thumbnail to its view
          */
-        private fun loadImageToImageView(imageItem: ImageItem, view: View) {
+        private fun loadImageToImageView(binding: ImageItemBinding, imageItem: ImageItem, view: View) {
                 val imageUrl = URLUtils.getFlickrImageLink(imageItem.id,
                         imageItem.secret,
                         imageItem.server,
                         imageItem.farm,
                         URLUtils.LARGE_SQUARE_SIZE)
 
-                Glide.with(view).load(imageUrl).diskCacheStrategy(DiskCacheStrategy.DATA).into(view.cvImage.ivImage)
+                Glide.with(view).load(imageUrl).diskCacheStrategy(DiskCacheStrategy.DATA).into(binding.ivImage)
         }
 
         override fun getItemCount(): Int = differ.currentList.size
